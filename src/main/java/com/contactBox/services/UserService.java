@@ -14,9 +14,13 @@ public interface UserService {
 
     UpdateContactResponse updateContact(UpdateContactRequest updateContactRequest);
 
-    ViewContactResponse viewContact(ViewContactRequest viewContactRequest);
+    FindContactByIdResponse findContactById(FindContactByIdRequest findContactByIdRequest);
 
     DeleteContactResponse deleteContact(DeleteContactRequest deleteContactRequest);
 
     FindAllContactsResponse findAllContacts(FindAllContactRequest findAllContactRequest);
+
+    FindContactByNameResponse findContactByName(FindContactByNameRequest findContactByNameRequest);
+
+    FindContactByPhoneNumberResponse findContactByPhoneNumber(FindContactByPhoneNumberRequest findContactByPhoneNumberRequest);
 }

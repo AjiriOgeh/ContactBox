@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document("ContactBoxUsers")
+@Document("Users")
 public class User {
     @Id
     private String id;

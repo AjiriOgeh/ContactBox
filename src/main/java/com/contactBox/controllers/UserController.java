@@ -48,8 +48,8 @@ public class UserController {
     public ResponseEntity<?> createContact(@RequestBody CreateContactRequest createContactRequest) {
         try {
             return new ResponseEntity<>(new ApiResponse(true, userService.createContact(createContactRequest)), HttpStatus.CREATED);
-
-        } catch (Exception error) {
+        }
+        catch (Exception error) {
             return new ResponseEntity<>(new ApiResponse(false, error.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
@@ -58,17 +58,16 @@ public class UserController {
     public ResponseEntity<?> updateContact(@RequestBody UpdateContactRequest updateContactRequest) {
         try {
             return new ResponseEntity<>(new ApiResponse(true, userService.updateContact(updateContactRequest)), HttpStatus.OK);
-
-        } catch (Exception error) {
+        }
+        catch (Exception error) {
             return new ResponseEntity<>(new ApiResponse(false, error.getMessage()), HttpStatus.BAD_REQUEST);
         }
-
     }
 
-    @GetMapping("/ViewContact")
-    public ResponseEntity<?> viewContact(@RequestBody ViewContactRequest viewContactRequest) {
+    @GetMapping("/FindContactById")
+    public ResponseEntity<?> findContactById(@RequestBody FindContactByIdRequest findContactByIdRequest) {
         try {
-            return new ResponseEntity<>(new ApiResponse(true, userService.viewContact(viewContactRequest)), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponse(true, userService.findContactById(findContactByIdRequest)), HttpStatus.OK);
         }
         catch (Exception error) {
             return new ResponseEntity<>(new ApiResponse(false, error.getMessage()), HttpStatus.BAD_REQUEST);
@@ -79,7 +78,8 @@ public class UserController {
     public ResponseEntity<?> deleteContact(@RequestBody DeleteContactRequest deleteContactRequest) {
         try {
             return new ResponseEntity<>(new ApiResponse(true, userService.deleteContact(deleteContactRequest)), HttpStatus.OK);
-        } catch (Exception error) {
+        }
+        catch (Exception error) {
             return new ResponseEntity<>(new ApiResponse(false, error.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
@@ -93,4 +93,26 @@ public class UserController {
             return new ResponseEntity<>(new ApiResponse(false, error.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/FindContactByName")
+    public ResponseEntity<?> findContactByName(@RequestBody FindContactByNameRequest findContactByNameRequest) {
+        try {
+            return new ResponseEntity<>(new ApiResponse(true, userService.findContactByName(findContactByNameRequest)), HttpStatus.OK);
+        }
+        catch (Exception error) {
+            return new ResponseEntity<>(new ApiResponse(false, error.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/FindContactByPhoneNumber")
+    public ResponseEntity<?> findContactByPhoneNumber(@RequestBody FindContactByPhoneNumberRequest findContactByPhoneNumberRequest) {
+        try {
+            return new ResponseEntity<>(new ApiResponse(true, userService.findContactByPhoneNumber(findContactByPhoneNumberRequest)), HttpStatus.OK);
+        }
+        catch (Exception error) {
+            return new ResponseEntity<>(new ApiResponse(false, error.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 }

@@ -6,5 +6,4 @@ import lombok.Data;
 public class UpdateContactResponse {
     private String userId;
     private String contactId;
-    private String header;
 }

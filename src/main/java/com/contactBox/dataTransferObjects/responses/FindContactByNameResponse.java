@@ -6,7 +6,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ViewContactResponse {
+public class FindContactByNameResponse {
     private String userId;
-    private Contact contact;
+    private String username;
+    private List<Contact> contacts;
 }

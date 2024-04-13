@@ -3,14 +3,15 @@ package com.contactBox.services;
 import com.contactBox.data.models.Contact;
 import com.contactBox.data.models.User;
 import com.contactBox.data.repositories.ContactRepository;
-import com.contactBox.dataTransferObjects.requests.CreateContactRequest;
-import com.contactBox.dataTransferObjects.requests.DeleteContactRequest;
-import com.contactBox.dataTransferObjects.requests.UpdateContactRequest;
+import com.contactBox.dataTransferObjects.requests.*;
 import com.contactBox.dataTransferObjects.responses.DeleteContactResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.contactBox.utilities.ContactFinder.findContactInUserList;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.contactBox.utilities.FindContact.findContactInUserList;
 import static com.contactBox.utilities.Mappers.*;
 
 @Service
@@ -21,7 +22,6 @@ public class ContactServiceImplementation implements ContactService{
 
     @Override
     public Contact createContact(CreateContactRequest createContactRequest) {
-        if (validateCreateContactInputs(createContactRequest)) throw new IllegalArgumentException("All Fields are null or empty. Please enter a valid Input to create contact.");
         Contact contact = createContactRequestMap(createContactRequest);
         contactRepository.save(contact);
         return contact;
@@ -43,18 +43,29 @@ public class ContactServiceImplementation implements ContactService{
         return deleteContactResponse;
     }
 
-    private static boolean validateCreateContactInputs(CreateContactRequest createContactRequest) {
-        String[] createContactInputs = {createContactRequest.getHeader(), createContactRequest.getFirstName(), createContactRequest.getLastName(),
-                createContactRequest.getPhoneNumber(), createContactRequest.getHeader(), createContactRequest.getNotes(), createContactRequest.getBuildingNumber(),
-                createContactRequest.getStreet(), createContactRequest.getState(), createContactRequest.getCountry()};
-
-        for (String createContactInput : createContactInputs) {
-            if (createContactInput != null && !createContactInput.isEmpty()) return false;
+    @Override
+    public List<Contact> findContactByName(FindContactByNameRequest findContactByNameRequest, User user) {
+        List<Contact> contacts = new ArrayList<>();
+        for (int count = 0; count < user.getContacts().size(); count++) {
+            boolean isFirstNameExisting = user.getContacts().get(count).getFirstName().equals(findContactByNameRequest.getName().toLowerCase());
+            boolean isLastNameExisting = user.getContacts().get(count).getLastName().equals(findContactByNameRequest.getName().toLowerCase());
+            if (isFirstNameExisting || isLastNameExisting) {
+                contacts.add(user.getContacts().get(count));
+            }
         }
-        return true;
+        return contacts;
     }
 
-
-
+    @Override
+    public List<Contact> findContactByPhoneNumber(FindContactByPhoneNumberRequest findContactByPhoneNumberRequest, User user) {
+        List<Contact> contacts = new ArrayList<>();
+        for (int count = 0; count < user.getContacts().size(); count++) {
+            boolean isPhoneNumberExisting = user.getContacts().get(count).getPhoneNumber().equals(findContactByPhoneNumberRequest.getPhoneNumber());
+            if (isPhoneNumberExisting) {
+                contacts.add(user.getContacts().get(count));
+            }
+        }
+        return contacts;
+    }
 
 }

@@ -5,10 +5,7 @@ import com.contactBox.data.repositories.ContactRepository;
 import com.contactBox.data.repositories.UserRepository;
 import com.contactBox.dataTransferObjects.requests.*;
 import com.contactBox.dataTransferObjects.responses.*;
-import com.contactBox.exceptions.ContactNotFoundException;
-import com.contactBox.exceptions.InvalidPasswordException;
-import com.contactBox.exceptions.ProfileLockException;
-import com.contactBox.exceptions.UserNotFoundException;
+import com.contactBox.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,29 +29,45 @@ public class UserServiceImplementationTest {
     public void setUp(){
         userRepository.deleteAll();
         contactRepository.deleteAll();
-    }
-
-    @Test
-    public void userSignsUp_UserIsSavedTest() {
-        assertEquals(0, userRepository.count());
 
         SignUpRequest signUpRequest = new SignUpRequest();
         signUpRequest.setUsername("jane123");
         signUpRequest.setPassword("password");
         signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
+        userService.signUp(signUpRequest);
 
-        User janeContactBox = userRepository.findByUsername("jane123");
+        CreateContactRequest createContactRequest = new CreateContactRequest();
+        createContactRequest.setUsername("jane123");
+        createContactRequest.setFirstName("jill");
+        createContactRequest.setLastName("smith");
+        createContactRequest.setPhoneNumber("09123456789");
+        createContactRequest.setEmail("jillsmith@gmail.com");
+        createContactRequest.setBuildingNumber("1");
+        createContactRequest.setStreet("broadway");
+        createContactRequest.setCity("new york city");
+        createContactRequest.setState("new york");
+        createContactRequest.setCountry("usa");
+        createContactRequest.setNotes("always there for me in good and bad times.");
+        userService.createContact(createContactRequest);
+    }
 
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
+    @Test
+    public void userSignsUp_UserIsSavedTest() {
+        SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setUsername("jessica123");
+        signUpRequest.setPassword("password");
+        signUpRequest.setConfirmPassword("password");
+        SignUpResponse jessicaSignUpResponse = userService.signUp(signUpRequest);
+
+        User jessicaContactBox = userRepository.findByUsername("jessica123");
+
+        assertEquals(2, userRepository.count());
+        assertEquals("jessica123", jessicaContactBox.getUsername());
+        assertEquals("jessica123", jessicaSignUpResponse.getUsername());
     }
 
     @Test
     public void userSignsUp_UsernameIsNull_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
         SignUpRequest signUpRequest = new SignUpRequest();
         signUpRequest.setUsername(null);
         signUpRequest.setPassword("password");
@@ -65,8 +78,6 @@ public class UserServiceImplementationTest {
 
     @Test
     public void userSignsUp_UsernameIsEmpty_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
         SignUpRequest signUpRequest = new SignUpRequest();
         signUpRequest.setUsername("");
         signUpRequest.setPassword("password");
@@ -77,10 +88,8 @@ public class UserServiceImplementationTest {
 
     @Test
     public void userSignsUp_UsernameContainsSpaceCharacter_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
         SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane 123");
+        signUpRequest.setUsername("jessica 123");
         signUpRequest.setPassword("password");
         signUpRequest.setConfirmPassword("password");
 
@@ -89,21 +98,8 @@ public class UserServiceImplementationTest {
 
     @Test
     public void userSignsUp_UsernameExists_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
         SignUpRequest signUpRequest = new SignUpRequest();
         signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        signUpRequest.setUsername("Jane123");
         signUpRequest.setPassword("password123");
         signUpRequest.setConfirmPassword("password123");
 
@@ -112,10 +108,8 @@ public class UserServiceImplementationTest {
 
     @Test
     public void userSignsUp_PasswordIsNull_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
         SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
+        signUpRequest.setUsername("jessica123");
         signUpRequest.setPassword(null);
         signUpRequest.setConfirmPassword(null);
 
@@ -124,10 +118,8 @@ public class UserServiceImplementationTest {
 
     @Test
     public void userSignsUp_PasswordIsEmpty_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
         SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
+        signUpRequest.setUsername("jessica123");
         signUpRequest.setPassword("");
         signUpRequest.setConfirmPassword("");
 
@@ -136,10 +128,8 @@ public class UserServiceImplementationTest {
 
     @Test
     public void userSignsUp_PasswordIsLessThan6Characters_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
         SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
+        signUpRequest.setUsername("jessica123");
         signUpRequest.setPassword("word");
         signUpRequest.setConfirmPassword("word");
 
@@ -147,9 +137,7 @@ public class UserServiceImplementationTest {
     }
 
     @Test
-    public void userSignsUp_PasswordDoesNotMatch_ConfirmPasswordThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
+    public void userSignsUp_PasswordDoesNotMatch_ConfirmPassword_ThrowsExceptionTest() {
         SignUpRequest signUpRequest = new SignUpRequest();
         signUpRequest.setUsername("jane123");
         signUpRequest.setPassword("password");
@@ -160,25 +148,11 @@ public class UserServiceImplementationTest {
 
     @Test
     public void userSignsUp_UserLogsOutTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setUsername("jane123");
         LogoutResponse janeLogoutResponse = userService.logout(logoutRequest);
 
-        janeContactBox = userRepository.findByUsername("jane123");
+        User janeContactBox = userRepository.findByUsername("jane123");
 
         assertTrue(janeContactBox.isLocked());
         assertEquals(janeContactBox.getId(), janeLogoutResponse.getUserId());
@@ -187,20 +161,6 @@ public class UserServiceImplementationTest {
 
     @Test
     public void nonExistentUserLogsOut_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setUsername("jill123");
 
@@ -209,25 +169,11 @@ public class UserServiceImplementationTest {
 
     @Test
     public void userLogsOut_UserLogsInTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setUsername("jane123");
         LogoutResponse janeLogoutResponse = userService.logout(logoutRequest);
 
-        janeContactBox = userRepository.findByUsername("jane123");
+        User janeContactBox = userRepository.findByUsername("jane123");
 
         assertTrue(janeContactBox.isLocked());
         assertEquals(janeContactBox.getId(), janeLogoutResponse.getUserId());
@@ -236,7 +182,6 @@ public class UserServiceImplementationTest {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername("jane123");
         loginRequest.setPassword("password");
-
         LoginResponse janeLoginResponse = userService.login(loginRequest);
 
         janeContactBox = userRepository.findByUsername("jane123");
@@ -247,26 +192,12 @@ public class UserServiceImplementationTest {
     }
 
     @Test
-    public void nonExistentUserLogIn_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
+    public void nonExistentUserLogsIn_ThrowsExceptionTest() {
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setUsername("jane123");
         LogoutResponse janeLogoutResponse = userService.logout(logoutRequest);
 
-        janeContactBox = userRepository.findByUsername("jane123");
+        User janeContactBox = userRepository.findByUsername("jane123");
 
         assertTrue(janeContactBox.isLocked());
         assertEquals(janeContactBox.getId(), janeLogoutResponse.getUserId());
@@ -281,25 +212,11 @@ public class UserServiceImplementationTest {
 
     @Test
     public void userLogsIn_PasswordIsInvalid_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setUsername("jane123");
         LogoutResponse janeLogoutResponse = userService.logout(logoutRequest);
 
-        janeContactBox = userRepository.findByUsername("jane123");
+        User janeContactBox = userRepository.findByUsername("jane123");
 
         assertTrue(janeContactBox.isLocked());
         assertEquals(janeContactBox.getId(), janeLogoutResponse.getUserId());
@@ -313,120 +230,78 @@ public class UserServiceImplementationTest {
     }
 
     @Test
-    public void userAddsContactTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
+    public void userCreatesContactTest() {
+        CreateContactRequest createContactRequest = new CreateContactRequest();
+        createContactRequest.setUsername("jane123");
+        createContactRequest.setFirstName("jessica");
+        createContactRequest.setLastName("brown");
+        createContactRequest.setPhoneNumber("08123456789");
+        createContactRequest.setEmail("jessicabrown@gmail.com");
+        createContactRequest.setBuildingNumber("2");
+        createContactRequest.setStreet("hollywood boulevard");
+        createContactRequest.setCity("los angeles");
+        createContactRequest.setState("california");
+        createContactRequest.setCountry("usa");
+        createContactRequest.setNotes("my kind and funny friend who i can count on");
+        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
 
         User janeContactBox = userRepository.findByUsername("jane123");
 
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setLastName("smith");
-        createContactRequest.setPhoneNumber("09123456789");
-        createContactRequest.setEmail("jillsmith@gmail.com");
-        createContactRequest.setBuildingNumber("1");
-        createContactRequest.setStreet("broadway");
-        createContactRequest.setState("new york");
-        createContactRequest.setCountry("usa");
-        createContactRequest.setNotes("Always there for me in good and bad times.");
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
+        assertEquals("jessica", janeContactBox.getContacts().get(1).getFirstName());
+        assertEquals(2, contactRepository.count());
+        assertEquals("08123456789", contactRepository.findAll().get(1).getPhoneNumber());
+        assertEquals(2, janeContactBox.getContacts().size());
         assertEquals("jane123", janeCreateContactResponse.getUsername());
     }
 
     @Test
     public void userLogsOut_UserCreatesContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setUsername("jane123");
         LogoutResponse janeLogoutResponse = userService.logout(logoutRequest);
 
-        janeContactBox = userRepository.findByUsername("jane123");
+        User janeContactBox = userRepository.findByUsername("jane123");
 
         assertTrue(janeContactBox.isLocked());
         assertEquals(janeContactBox.getId(), janeLogoutResponse.getUserId());
         assertEquals("jane123", janeLogoutResponse.getUsername());
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
         createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
+        createContactRequest.setFirstName("jessica");
+        createContactRequest.setLastName("brown");
+        createContactRequest.setPhoneNumber("08123456789");
+        createContactRequest.setEmail("jessicabrown@gmail.com");
 
         assertThrows(ProfileLockException.class, ()->userService.createContact(createContactRequest));
     }
 
     @Test
     public void nonExistentUserCreatesContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jessica123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
+        createContactRequest.setUsername("jill123");
+        createContactRequest.setFirstName("jessica");
+        createContactRequest.setLastName("brown");
+        createContactRequest.setPhoneNumber("08123456789");
+        createContactRequest.setEmail("jessicabrown@gmail.com");
 
         assertThrows(UserNotFoundException.class, ()->userService.createContact(createContactRequest));
     }
 
     @Test
+    public void userCreatesContact_PhoneNumberIsInvalid_ThrowsExceptionTest() {
+        CreateContactRequest createContactRequest = new CreateContactRequest();
+        createContactRequest.setUsername("jane123");
+        createContactRequest.setFirstName("jessica");
+        createContactRequest.setLastName("brown");
+        createContactRequest.setPhoneNumber("08123abcdef");
+        createContactRequest.setEmail("jessicabrown@gmail.com");
+
+        assertThrows(IllegalArgumentException.class, ()->userService.createContact(createContactRequest));
+    }
+
+    @Test
     public void userCreatesContact_AllFieldsAreNullOrEmpty_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
         CreateContactRequest createContactRequest = new CreateContactRequest();
         createContactRequest.setUsername("jane123");
 
@@ -434,148 +309,73 @@ public class UserServiceImplementationTest {
     }
 
     @Test
-    public void userCreatesContact_UserEditsContactTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
+    public void userUpdatesContactTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
-
-        assertNull(janeContactBox.getContacts().getFirst().getLastName());
-        assertNull(janeContactBox.getContacts().getFirst().getAddress().getBuildingNumber());
-        assertNull(janeContactBox.getContacts().getFirst().getAddress().getStreet());
-
         String contactId = janeContactBox.getContacts().getFirst().getId();
 
         UpdateContactRequest updateContactRequest = new UpdateContactRequest();
         updateContactRequest.setUsername("jane123");
         updateContactRequest.setId(contactId);
-        updateContactRequest.setHeader("my best friend");
+        updateContactRequest.setEmail("jillsmith@yahoo.com");
         updateContactRequest.setPhoneNumber("07123456789");
-        updateContactRequest.setStreet("broadway");
+        updateContactRequest.setStreet("wall street");
         UpdateContactResponse janeUpdateContactResponse = userService.updateContact(updateContactRequest);
 
         janeContactBox = userRepository.findByUsername("jane123");
 
         assertEquals(1, janeContactBox.getContacts().size());
         assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("07123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
+        assertEquals("jillsmith@yahoo.com", janeContactBox.getContacts().getFirst().getEmail());
         assertEquals("07123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("my best friend", janeUpdateContactResponse.getHeader());
-        assertEquals("broadway", janeContactBox.getContacts().getFirst().getAddress().getStreet());
+        assertEquals("wall street", janeContactBox.getContacts().getFirst().getAddress().getStreet());
+        assertEquals(janeContactBox.getId(), janeUpdateContactResponse.getUserId());
     }
 
     @Test
-    public void nonExistentUserEditsContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
+    public void nonExistentUser_UpdatesContact_ThrowsExceptionTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
-
-        assertNull(janeContactBox.getContacts().getFirst().getLastName());
-        assertNull(janeContactBox.getContacts().getFirst().getAddress().getBuildingNumber());
-        assertNull(janeContactBox.getContacts().getFirst().getAddress().getStreet());
-
         String contactId = janeContactBox.getContacts().getFirst().getId();
 
         UpdateContactRequest updateContactRequest = new UpdateContactRequest();
         updateContactRequest.setUsername("jessica123");
         updateContactRequest.setId(contactId);
+        updateContactRequest.setEmail("jillsmith@yahoo.com");
         updateContactRequest.setPhoneNumber("07123456789");
-        updateContactRequest.setStreet("broadway");
+        updateContactRequest.setStreet("wall street");
 
         assertThrows(UserNotFoundException.class, ()->userService.updateContact(updateContactRequest));
     }
 
     @Test
-    public void userLogsOutEditsContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
+    public void userUpdatesNonExistentContact_ThrowsExceptionTest() {
+        UpdateContactRequest updateContactRequest = new UpdateContactRequest();
+        updateContactRequest.setUsername("jane123");
+        updateContactRequest.setId("non existent contact id");
+        updateContactRequest.setEmail("jillsmith@yahoo.com");
+        updateContactRequest.setPhoneNumber("07123456789");
+        updateContactRequest.setStreet("wall street");
 
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
+        assertThrows(ContactNotFoundException.class, ()->userService.updateContact(updateContactRequest));
+    }
 
+    @Test
+    public void userUpdatesContact_PhoneNumberIsInvalid_ThrowsExceptionTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
+        String contactId = janeContactBox.getContacts().getFirst().getId();
 
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
+        UpdateContactRequest updateContactRequest = new UpdateContactRequest();
+        updateContactRequest.setUsername("jane123");
+        updateContactRequest.setId(contactId);
+        updateContactRequest.setEmail("jillsmith@yahoo.com");
+        updateContactRequest.setPhoneNumber("07123abcdef");
+        updateContactRequest.setStreet("wall street");
 
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
+        assertThrows(IllegalArgumentException.class, ()->userService.updateContact(updateContactRequest));
+    }
 
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
-
-        assertNull(janeContactBox.getContacts().getFirst().getLastName());
-        assertNull(janeContactBox.getContacts().getFirst().getAddress().getBuildingNumber());
-        assertNull(janeContactBox.getContacts().getFirst().getAddress().getStreet());
-
+    @Test
+    public void userLogsOut_UpdatesContact_ThrowsExceptionTest() {
+        User janeContactBox = userRepository.findByUsername("jane123");
         String contactId = janeContactBox.getContacts().getFirst().getId();
 
         LogoutRequest logoutRequest = new LogoutRequest();
@@ -598,85 +398,25 @@ public class UserServiceImplementationTest {
     }
 
     @Test
-    public void userCreatesContact_UserViewsContactTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
+    public void userFindsContactByIdTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
-
         String contactId = janeContactBox.getContacts().getFirst().getId();
 
-        ViewContactRequest viewContactRequest = new ViewContactRequest();
-        viewContactRequest.setUsername("jane123");
-        viewContactRequest.setContactId(contactId);
-        ViewContactResponse viewContactResponse = userService.viewContact(viewContactRequest);
+        FindContactByIdRequest findContactByIdRequest = new FindContactByIdRequest();
+        findContactByIdRequest.setUsername("jane123");
+        findContactByIdRequest.setContactId(contactId);
+        FindContactByIdResponse janeFindContactByIdResponse = userService.findContactById(findContactByIdRequest);
 
         janeContactBox = userRepository.findByUsername("jane123");
 
         assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals(janeContactBox.getId(), viewContactResponse.getUserId());
-        assertEquals(janeContactBox.getContacts().getFirst(), viewContactResponse.getContact());
+        assertEquals(janeContactBox.getId(), janeFindContactByIdResponse.getUserId());
+        assertEquals(janeContactBox.getContacts().getFirst(), janeFindContactByIdResponse.getContact());
     }
 
     @Test
-    public void userLogsOut_UserViewsContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
+    public void userLogsOut_UserFindsContactById_ThrowsExceptionTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
-
         String contactId = janeContactBox.getContacts().getFirst().getId();
 
         LogoutRequest logoutRequest = new LogoutRequest();
@@ -689,131 +429,42 @@ public class UserServiceImplementationTest {
         assertEquals(janeContactBox.getId(), janeLogoutResponse.getUserId());
         assertEquals("jane123", janeLogoutResponse.getUsername());
 
-        ViewContactRequest viewContactRequest = new ViewContactRequest();
-        viewContactRequest.setUsername("jane123");
-        viewContactRequest.setContactId(contactId);
+        FindContactByIdRequest findContactByIdRequest = new FindContactByIdRequest();
+        findContactByIdRequest.setUsername("jane123");
+        findContactByIdRequest.setContactId(contactId);
 
-        assertThrows(ProfileLockException.class, ()->userService.viewContact(viewContactRequest));
+        assertThrows(ProfileLockException.class, ()->userService.findContactById(findContactByIdRequest));
     }
 
     @Test
-    public void nonExistentUserViewsContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
+    public void nonExistentUserFindsContactById_ThrowsExceptionTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
         String contactId = janeContactBox.getContacts().getFirst().getId();
 
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
+        FindContactByIdRequest findContactByIdRequest = new FindContactByIdRequest();
+        findContactByIdRequest.setUsername("jessica123");
+        findContactByIdRequest.setContactId(contactId);
 
-        ViewContactRequest viewContactRequest = new ViewContactRequest();
-        viewContactRequest.setUsername("jessica123");
-        viewContactRequest.setContactId(contactId);
-
-        assertThrows(UserNotFoundException.class, ()->userService.viewContact(viewContactRequest));
+        assertThrows(UserNotFoundException.class, ()->userService.findContactById(findContactByIdRequest));
     }
 
     @Test
-    public void userViewsNonExistentContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
+    public void userFindsContact_WithNonExistentId_ThrowsExceptionTest() {
+        FindContactByIdRequest findContactByIdRequest = new FindContactByIdRequest();
+        findContactByIdRequest.setUsername("jane123");
+        findContactByIdRequest.setContactId("non existent contact");
 
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
-
-        ViewContactRequest viewContactRequest = new ViewContactRequest();
-        viewContactRequest.setUsername("jane123");
-        viewContactRequest.setContactId("non existent contact");
-
-        assertThrows(ContactNotFoundException.class, ()->userService.viewContact(viewContactRequest));
+        assertThrows(ContactNotFoundException.class, ()->userService.findContactById(findContactByIdRequest));
     }
 
     @Test
-    public void userCreatesContact_UserDeletesContactTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
+    public void userDeletesContactTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
         String contactId = janeContactBox.getContacts().getFirst().getId();
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
 
         DeleteContactRequest deleteContactRequest = new DeleteContactRequest();
         deleteContactRequest.setContactId(contactId);
-        deleteContactRequest.setUsername("JANE123");
+        deleteContactRequest.setUsername("jane123");
         deleteContactRequest.setPassword("password");
         DeleteContactResponse deleteContactResponse = userService.deleteContact(deleteContactRequest);
 
@@ -826,38 +477,9 @@ public class UserServiceImplementationTest {
     }
 
     @Test
-    public void nonExistentUserDeletesContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
+    public void nonExistentUser_DeletesContact_ThrowsExceptionTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
         String contactId = janeContactBox.getContacts().getFirst().getId();
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
 
         DeleteContactRequest deleteContactRequest = new DeleteContactRequest();
         deleteContactRequest.setContactId(contactId);
@@ -868,79 +490,19 @@ public class UserServiceImplementationTest {
     }
 
     @Test
-    public void userDeletesNonExistentContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
-
+    public void userDeletes_NonExistentContact_ThrowsExceptionTest() {
         DeleteContactRequest deleteContactRequest = new DeleteContactRequest();
-        deleteContactRequest.setContactId("non existent contact id");
         deleteContactRequest.setUsername("jane123");
+        deleteContactRequest.setContactId("non existent contact id");
         deleteContactRequest.setPassword("password");
 
         assertThrows(ContactNotFoundException.class, ()->userService.deleteContact(deleteContactRequest));
     }
 
     @Test
-    public void userDeletesContact_PasswordIsInvalid_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
+    public void userLogsOut_DeletesContact_ThrowsExceptionTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
         String contactId = janeContactBox.getContacts().getFirst().getId();
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
 
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setUsername("jane123");
@@ -961,38 +523,9 @@ public class UserServiceImplementationTest {
     }
 
     @Test
-    public void userLogsOut_DeletesContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
+    public void userDeletesContact_PasswordIsInvalid_ThrowsExceptionTest() {
         User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setPhoneNumber("09123456789");
-
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
         String contactId = janeContactBox.getContacts().getFirst().getId();
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals("09123456789", janeContactBox.getContacts().getFirst().getPhoneNumber());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
 
         DeleteContactRequest deleteContactRequest = new DeleteContactRequest();
         deleteContactRequest.setContactId(contactId);
@@ -1003,85 +536,135 @@ public class UserServiceImplementationTest {
     }
 
     @Test
-    public void userFindAllContactsTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setLastName("smith");
-        createContactRequest.setPhoneNumber("09123456789");
-        createContactRequest.setEmail("jillsmith@gmail.com");
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
-
+    public void userFindsAllContactsTest() {
         FindAllContactRequest findAllContactRequest = new FindAllContactRequest();
         findAllContactRequest.setUsername("jane123");
         FindAllContactsResponse janeFindAllContactsResponse = userService.findAllContacts(findAllContactRequest);
 
         assertEquals(1, janeFindAllContactsResponse.getContacts().size());
+        assertEquals("jill", janeFindAllContactsResponse.getContacts().getFirst().getFirstName());
         assertEquals("jane123", janeFindAllContactsResponse.getUsername());
     }
 
     @Test
-    public void nonExistentUser_FindsContact_ThrowsExceptionTest() {
-        assertEquals(0, userRepository.count());
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("jane123");
-        signUpRequest.setPassword("password");
-        signUpRequest.setConfirmPassword("password");
-        SignUpResponse janeSignUpResponse = userService.signUp(signUpRequest);
-
-        User janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, userRepository.count());
-        assertEquals("jane123", janeContactBox.getUsername());
-        assertEquals("jane123", janeSignUpResponse.getUsername());
-
-        CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setHeader("my best friend");
-        createContactRequest.setUsername("jane123");
-        createContactRequest.setFirstName("jill");
-        createContactRequest.setLastName("smith");
-        createContactRequest.setPhoneNumber("09123456789");
-        createContactRequest.setEmail("jillsmith@gmail.com");
-        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
-
-        janeContactBox = userRepository.findByUsername("jane123");
-
-        assertEquals(1, janeContactBox.getContacts().size());
-        assertEquals("jill", janeContactBox.getContacts().getFirst().getFirstName());
-        assertEquals(1, contactRepository.count());
-        assertEquals("09123456789", contactRepository.findAll().getFirst().getPhoneNumber());
-        assertEquals("jane123", janeCreateContactResponse.getUsername());
-
+    public void nonExistentUser_FindsAllContact_ThrowsExceptionTest() {
         FindAllContactRequest findAllContactRequest = new FindAllContactRequest();
         findAllContactRequest.setUsername("jessica123");
 
         assertThrows(UserNotFoundException.class, ()->userService.findAllContacts(findAllContactRequest));
-
     }
 
+    @Test
+    public void userLogsOut_FindsAllContacts_ThrowsExceptionTest() {
+        LogoutRequest logoutRequest = new LogoutRequest();
+        logoutRequest.setUsername("jane123");
+        LogoutResponse janeLogoutResponse = userService.logout(logoutRequest);
+
+        User janeContactBox = userRepository.findByUsername("jane123");
+
+        assertTrue(janeContactBox.isLocked());
+        assertEquals(janeContactBox.getId(), janeLogoutResponse.getUserId());
+        assertEquals("jane123", janeLogoutResponse.getUsername());
+
+        FindAllContactRequest findAllContactRequest = new FindAllContactRequest();
+        findAllContactRequest.setUsername("jane123");
+
+        assertThrows(ProfileLockException.class, ()->userService.findAllContacts(findAllContactRequest));
+    }
+
+    @Test
+    public void userFindsContactByNameTest() {
+        FindContactByNameRequest findContactByNameRequest = new FindContactByNameRequest();
+        findContactByNameRequest.setUsername("jane123");
+        findContactByNameRequest.setName("jill");
+        FindContactByNameResponse janeFindContactByNameResponse = userService.findContactByName(findContactByNameRequest);
+
+        assertEquals(1, janeFindContactByNameResponse.getContacts().size());
+        assertEquals("jill", janeFindContactByNameResponse.getContacts().getFirst().getFirstName());
+        assertEquals("jane123", janeFindContactByNameResponse.getUsername());
+    }
+
+    @Test
+    public void userFindsTwoContactsByNameTest() {
+        CreateContactRequest createContactRequest = new CreateContactRequest();
+        createContactRequest.setUsername("jane123");
+        createContactRequest.setFirstName("jill");
+        createContactRequest.setLastName("green");
+        createContactRequest.setPhoneNumber("06123456789");
+        createContactRequest.setEmail("jillgreen@gmail.com");
+        createContactRequest.setBuildingNumber("3");
+        createContactRequest.setStreet("fifth avenue");
+        createContactRequest.setCity("new york city");
+        createContactRequest.setState("new york");
+        createContactRequest.setCountry("usa");
+        createContactRequest.setNotes("a wonderful listener");
+        CreateContactResponse janeCreateContactResponse = userService.createContact(createContactRequest);
+
+        User janeContactBox = userRepository.findByUsername("jane123");
+
+        assertEquals("green", janeContactBox.getContacts().get(1).getLastName());
+        assertEquals(2, contactRepository.count());
+        assertEquals("06123456789", contactRepository.findAll().get(1).getPhoneNumber());
+        assertEquals(2, janeContactBox.getContacts().size());
+        assertEquals("jane123", janeCreateContactResponse.getUsername());
+
+        FindContactByNameRequest findContactByNameRequest = new FindContactByNameRequest();
+        findContactByNameRequest.setUsername("jane123");
+        findContactByNameRequest.setName("jill");
+        FindContactByNameResponse janeFindContactByNameResponse = userService.findContactByName(findContactByNameRequest);
+
+        assertEquals(2, janeFindContactByNameResponse.getContacts().size());
+        assertEquals("jane123", janeFindContactByNameResponse.getUsername());
+        assertEquals("jill", janeFindContactByNameResponse.getContacts().getFirst().getFirstName());
+        assertEquals("green", janeFindContactByNameResponse.getContacts().get(1).getLastName());
+    }
+
+    @Test
+    public void nonExistentUser_FindContactByName_ThrowsExceptionTest() {
+        FindContactByNameRequest findContactByNameRequest = new FindContactByNameRequest();
+        findContactByNameRequest.setUsername("jessica123");
+        findContactByNameRequest.setName("jill");
+
+        assertThrows(UserNotFoundException.class, ()->userService.findContactByName(findContactByNameRequest));
+    }
+
+    @Test
+    public void userFindsContact_WithNonExistentName_ThrowsExceptionTest() {
+        FindContactByNameRequest findContactByNameRequest = new FindContactByNameRequest();
+        findContactByNameRequest.setUsername("jane123");
+        findContactByNameRequest.setName("jessica");
+
+        assertThrows(ContactNotFoundException.class,()-> userService.findContactByName(findContactByNameRequest));
+    }
+
+    @Test
+    public void userFindsContactByPhoneNumberTest() {
+        FindContactByPhoneNumberRequest findContactByPhoneNumberRequest = new FindContactByPhoneNumberRequest();
+        findContactByPhoneNumberRequest.setUsername("jane123");
+        findContactByPhoneNumberRequest.setPhoneNumber("09123456789");
+        FindContactByPhoneNumberResponse janeFindContactByPhoneNumberResponse = userService.findContactByPhoneNumber(findContactByPhoneNumberRequest);
+
+        assertEquals(1, janeFindContactByPhoneNumberResponse.getContacts().size());
+        assertEquals("jill", janeFindContactByPhoneNumberResponse.getContacts().getFirst().getFirstName());
+        assertEquals("jane123", janeFindContactByPhoneNumberResponse.getUsername());
+    }
+
+    @Test
+    public void nonExistentUser_FindsContactByPhoneNumber_ThrowsExceptionTest() {
+        FindContactByPhoneNumberRequest findContactByPhoneNumberRequest = new FindContactByPhoneNumberRequest();
+        findContactByPhoneNumberRequest.setUsername("jessica123");
+        findContactByPhoneNumberRequest.setPhoneNumber("09123456789");
+
+        assertThrows(UserNotFoundException.class, ()-> userService.findContactByPhoneNumber(findContactByPhoneNumberRequest));
+    }
+
+    @Test
+    public void userFindsContact_WithNonExistentPhoneNumber_ThrowsExceptionTest() {
+        FindContactByPhoneNumberRequest findContactByPhoneNumberRequest = new FindContactByPhoneNumberRequest();
+        findContactByPhoneNumberRequest.setUsername("jane123");
+        findContactByPhoneNumberRequest.setPhoneNumber("06123456789");
+
+        assertThrows(ContactNotFoundException.class, ()-> userService.findContactByPhoneNumber(findContactByPhoneNumberRequest));
+    }
 
 }

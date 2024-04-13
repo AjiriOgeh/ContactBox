@@ -9,16 +9,18 @@ import com.contactBox.dataTransferObjects.requests.UpdateContactRequest;
 import com.contactBox.dataTransferObjects.responses.*;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.contactBox.utilities.ValidateInputs.areAllFieldsNullOrEmpty;
+import static com.contactBox.utilities.ValidateInputs.isPhoneNumberAllDigits;
 
 public class Mappers {
 
     public static User signUpRequestMap(SignUpRequest signUpRequest) {
-        User newUser = new User();
-        newUser.setUsername(signUpRequest.getUsername().toLowerCase());
-        newUser.setPassword(signUpRequest.getPassword());
-        return newUser;
+        User user = new User();
+        user.setUsername(signUpRequest.getUsername().toLowerCase());
+        user.setPassword(signUpRequest.getPassword());
+        return user;
     }
 
     public static SignUpResponse signUpResponseMap(User user) {
@@ -44,22 +46,24 @@ public class Mappers {
     }
 
     public static Contact createContactRequestMap(CreateContactRequest createContactRequest) {
+        if (areAllFieldsNullOrEmpty(createContactRequest)) throw new IllegalArgumentException("All Fields are null or empty. Please enter a valid input to create contact.");
+        if (isPhoneNumberAllDigits(createContactRequest.getPhoneNumber())) throw new IllegalArgumentException("Please enter a valid phone number.");
         Contact contact = new Contact();
-        contact.setHeader(createContactRequest.getHeader());
-        contact.setFirstName(createContactRequest.getFirstName());
-        contact.setLastName(createContactRequest.getLastName());
+        contact.setFirstName(createContactRequest.getFirstName().toLowerCase());
+        contact.setLastName(createContactRequest.getLastName().toLowerCase());
         contact.setPhoneNumber(createContactRequest.getPhoneNumber());
         contact.setEmail(createContactRequest.getEmail());
         contact.setNotes(createContactRequest.getNotes());
-        addressMap(createContactRequest, contact.getAddress());
+        createContactRequestAddressMap(createContactRequest, contact.getAddress());
         return contact;
     }
 
-    private static void addressMap(CreateContactRequest createContactRequest, Address address) {
+    private static void createContactRequestAddressMap(CreateContactRequest createContactRequest, Address address) {
         address.setBuildingNumber(createContactRequest.getBuildingNumber());
+        address.setStreet(createContactRequest.getStreet());
+        address.setCity(createContactRequest.getCity());
         address.setState(createContactRequest.getState());
         address.setCountry(createContactRequest.getCountry());
-        address.setStreet(createContactRequest.getStreet());
     }
 
     public static CreateContactResponse createContactResponseMap(Contact contact, User user){
@@ -67,36 +71,39 @@ public class Mappers {
         createContactResponse.setUserId(user.getId());
         createContactResponse.setUsername(user.getUsername());
         createContactResponse.setContactId(contact.getId());
-        createContactResponse.setHeader(contact.getHeader());
         return createContactResponse;
     }
 
     public static Contact updateContactRequestMap(UpdateContactRequest updateContactRequest, Contact contact) {
-        if (updateContactRequest.getHeader() != null) contact.setHeader(updateContactRequest.getHeader());
-        if (updateContactRequest.getFirstName() != null) contact.setFirstName(updateContactRequest.getFirstName());
-        if (updateContactRequest.getLastName() != null) contact.setLastName(updateContactRequest.getLastName());
+        if (isPhoneNumberAllDigits(updateContactRequest.getPhoneNumber())) throw new IllegalArgumentException("Please enter a valid phone number.");
+        if (updateContactRequest.getFirstName() != null) contact.setFirstName(updateContactRequest.getFirstName().toLowerCase());
+        if (updateContactRequest.getLastName() != null) contact.setLastName(updateContactRequest.getLastName().toLowerCase());
         if (updateContactRequest.getPhoneNumber() != null) contact.setPhoneNumber(updateContactRequest.getPhoneNumber());
         if (updateContactRequest.getEmail() != null) contact.setEmail(updateContactRequest.getEmail());
         if (updateContactRequest.getNotes() != null) contact.setNotes(updateContactRequest.getNotes());
-        if (updateContactRequest.getBuildingNumber() != null) contact.getAddress().setBuildingNumber(updateContactRequest.getBuildingNumber());
-        if (updateContactRequest.getStreet() != null) contact.getAddress().setStreet(updateContactRequest.getStreet());
-        if (updateContactRequest.getState() != null) contact.getAddress().setState(updateContactRequest.getState());
-        if (updateContactRequest.getCountry() != null) contact.getAddress().setCountry(updateContactRequest.getCountry());
+        updateContactRequestAddressMap(updateContactRequest, contact.getAddress());
         return contact;
+    }
+
+    private static void updateContactRequestAddressMap(UpdateContactRequest updateContactRequest, Address address) {
+        if (updateContactRequest.getBuildingNumber() != null) address.setBuildingNumber(updateContactRequest.getBuildingNumber());
+        if (updateContactRequest.getCity() != null) address.setCity(updateContactRequest.getCity());
+        if (updateContactRequest.getStreet() != null) address.setStreet(updateContactRequest.getStreet());
+        if (updateContactRequest.getState() != null) address.setState(updateContactRequest.getState());
+        if (updateContactRequest.getCountry() != null) address.setCountry(updateContactRequest.getCountry());
     }
 
     public static UpdateContactResponse updateContactResponseMap(Contact contact, User user) {
         UpdateContactResponse updateContactResponse = new UpdateContactResponse();
         updateContactResponse.setUserId(user.getId());
         updateContactResponse.setContactId(contact.getId());
-        updateContactResponse.setHeader(contact.getHeader());
         return updateContactResponse;
     }
-    public static ViewContactResponse viewContactResponseMap(Contact contact, User user) {
-        ViewContactResponse viewContactResponse = new ViewContactResponse();
-        viewContactResponse.setUserId(user.getId());
-        viewContactResponse.setContact(contact);
-        return viewContactResponse;
+    public static FindContactByIdResponse viewContactResponseMap(Contact contact, User user) {
+        FindContactByIdResponse findContactByIdResponse = new FindContactByIdResponse();
+        findContactByIdResponse.setUserId(user.getId());
+        findContactByIdResponse.setContact(contact);
+        return findContactByIdResponse;
     }
 
     public static DeleteContactResponse deleteContactResponseMap(Contact contact, User user ) {
@@ -115,5 +122,20 @@ public class Mappers {
         return findAllContactsResponse;
     }
 
+    public static FindContactByNameResponse findContactByNameResponseMap(List<Contact> contacts, User user) {
+        FindContactByNameResponse findContactByNameResponse = new FindContactByNameResponse();
+        findContactByNameResponse.setUserId(user.getId());
+        findContactByNameResponse.setUsername(user.getUsername());
+        findContactByNameResponse.setContacts(contacts);
+        return findContactByNameResponse;
+    }
+
+    public static FindContactByPhoneNumberResponse findContactByPhoneNumberResponseMap(List<Contact> contacts, User user) {
+        FindContactByPhoneNumberResponse findContactByPhoneNumberResponse = new FindContactByPhoneNumberResponse();
+        findContactByPhoneNumberResponse.setUsername(user.getUsername());
+        findContactByPhoneNumberResponse.setUserId(user.getId());
+        findContactByPhoneNumberResponse.setContacts(contacts);
+        return findContactByPhoneNumberResponse;
+    }
 
 }

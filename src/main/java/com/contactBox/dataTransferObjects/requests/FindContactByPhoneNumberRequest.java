@@ -3,7 +3,7 @@ package com.contactBox.dataTransferObjects.requests;
 import lombok.Data;
 
 @Data
-public class ViewContactRequest {
+public class FindContactByPhoneNumberRequest {
     private String username;
-    private String contactId;
+    private String phoneNumber;
 }

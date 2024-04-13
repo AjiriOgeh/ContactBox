@@ -4,12 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f63657c-7564-4554-9b7c-cd7b05a795e7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    <list default="true" id="7f63657c-7564-4554-9b7c-cd7b05a795e7" name="Changes" comment="new commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/data/models/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/data/models/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/data/models/Contact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/data/models/Contact.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/data/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/data/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/requests/CreateContactRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/requests/CreateContactRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/requests/UpdateContactRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/requests/UpdateContactRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/requests/ViewContactRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/requests/FindContactByIdRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/responses/CreateContactResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/responses/CreateContactResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/responses/UpdateContactResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/responses/UpdateContactResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/responses/ViewContactResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/dataTransferObjects/responses/FindContactByIdResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/services/ContactService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/services/ContactService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/services/ContactServiceImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/services/ContactServiceImplementation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/services/UserServiceImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/services/UserServiceImplementation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/utilities/ContactFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/utilities/FindContact.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/contactBox/utilities/Mappers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/contactBox/utilities/Mappers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/contactBox/controllers/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/contactBox/controllers/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/contactBox/services/UserServiceImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/contactBox/services/UserServiceImplementationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,71 +53,83 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.ContactRepositoryTest.executor": "Run",
-    "JUnit.UserControllerTest.executor": "Coverage",
-    "JUnit.UserControllerTest.nonExistentUserEditsContactTest.executor": "Run",
-    "JUnit.UserControllerTest.nonExistentUserLogsIn.executor": "Run",
-    "JUnit.UserControllerTest.nonExistentUser_CreatesContactTest.executor": "Run",
-    "JUnit.UserControllerTest.userCreatesContactTest.executor": "Run",
-    "JUnit.UserControllerTest.userEditsContactTest.executor": "Run",
-    "JUnit.UserControllerTest.userFindsAllContacts.executor": "Run",
-    "JUnit.UserControllerTest.userSignsUpTest.executor": "Run",
-    "JUnit.UserControllerTest.usersSignsUpUsernameIsNullTest.executor": "Run",
-    "JUnit.UserRepositoryTest.userRegisters_UserIsStored.executor": "Run",
-    "JUnit.UserServiceImplementationTest.executor": "Coverage",
-    "JUnit.UserServiceImplementationTest.nonExistentUserCreatesContact_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.nonExistentUserDeletesContactTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.nonExistentUserDeletesContact_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.nonExistentUserEditsContactTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.nonExistentUserLogsOut_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.nonExistentUserViewsContact_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.nonExistentUser_FindsContact_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userAddsContactTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userAddsContact_ContactIsNull_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userCreatesContact_AllFieldsAreNullOrEmpty_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userCreatesContact_UserDeletesContactTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userCreatesContact_UserEditsContactTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userCreatesContact_UserViewsContactTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userDeletesContact_PasswordIsInvalid_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userDeletesNonExistentContact_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userFindAllContactsTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userLogsOut_DeletesContact_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userLogsOut_UserCreatesContact_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userLogsOut_UserViewsContact_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userSignsUp_UserIsSavedTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userSignsUp_UsernameContainsSpaceCharacter.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userSignsUp_UsernameExists.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userSignsUp_UsernameExists_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userSignsUp_UsernameIsEmptyTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userSignsUp_UsernameIsNullTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userViewNonExistentContact_ThrowsExceptionTest.executor": "Run",
-    "JUnit.UserServiceImplementationTest.userViewsNonExistentContact_ThrowsExceptionTest.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.ContactBox.executor": "Run",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/DELL/Desktop/passwordBox",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.ContactRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.nonExistentUserEditsContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.nonExistentUserFindsAllContactsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.nonExistentUserLogsIn.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.nonExistentUser_CreatesContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.userCreatesContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.userEditsContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.userFindsAllContacts.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.userFindsAllContacts_ContactsDoesNotExistTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.userLogsOut_FindsAllContactsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.userSignsUpTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.usersSignsUpUsernameIsNullTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserRepositoryTest.userRegisters_UserIsStored.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.nonExistentUserCreatesContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.nonExistentUserDeletesContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.nonExistentUserDeletesContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.nonExistentUserEditsContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.nonExistentUserLogsOut_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.nonExistentUserViewsContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.nonExistentUser_FindContactByName_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.nonExistentUser_FindsContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userAddsContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userAddsContact_ContactIsNull_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userCreatesContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userCreatesContact_AllFieldsAreNullOrEmpty_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userCreatesContact_PhoneNumberIsInvalid_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userCreatesContact_UserDeletesContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userCreatesContact_UserEditsContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userCreatesContact_UserViewsContactTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userDeletesContact_PasswordIsInvalid_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userDeletesNonExistentContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userFindAllContactsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userFindsContactByPhoneNumberTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userFindsTwoContactsByNameTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userFinds_NonContactByName_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userLogsOut_DeletesContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userLogsOut_UserCreatesContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userLogsOut_UserViewsContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userSignsUp_UserIsSavedTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userSignsUp_UsernameContainsSpaceCharacter.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userSignsUp_UsernameContainsSpaceCharacter_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userSignsUp_UsernameExists.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userSignsUp_UsernameExists_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userSignsUp_UsernameIsEmptyTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userSignsUp_UsernameIsNullTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userUpdatesContact_PhoneNumberIsInvalid_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userUpdatesNonExistentContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userViewNonExistentContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplementationTest.userViewsNonExistentContact_ThrowsExceptionTest.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ContactBox.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/DELL/Desktop/passwordBox&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.contactBox.dataTransferObjects.requests" />
       <recent name="com.contactBox.dataTransferObjects.responses" />
+      <recent name="com.contactBox.dataTransferObjects.requests" />
       <recent name="com.contactBox.exceptions" />
       <recent name="com.contactBox.services" />
       <recent name="com.contactBox.data.models" />
@@ -118,8 +144,8 @@
       <recent name="com.contactBox.data.repositories" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.ContactBox">
-    <configuration name="UserControllerTest.nonExistentUserEditsContactTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.UserControllerTest.userFindsAllContacts_ContactsDoesNotExistTest">
+    <configuration name="UserControllerTest.userFindsAllContacts_ContactsDoesNotExistTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="contactBox" />
       <extension name="coverage">
         <pattern>
@@ -129,13 +155,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.contactBox.controllers" />
       <option name="MAIN_CLASS_NAME" value="com.contactBox.controllers.UserControllerTest" />
-      <option name="METHOD_NAME" value="nonExistentUserEditsContactTest" />
+      <option name="METHOD_NAME" value="userFindsAllContacts_ContactsDoesNotExistTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserControllerTest.userFindsAllContacts" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserControllerTest.userLogsOut_FindsAllContactsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="contactBox" />
       <extension name="coverage">
         <pattern>
@@ -145,13 +171,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.contactBox.controllers" />
       <option name="MAIN_CLASS_NAME" value="com.contactBox.controllers.UserControllerTest" />
-      <option name="METHOD_NAME" value="userFindsAllContacts" />
+      <option name="METHOD_NAME" value="userLogsOut_FindsAllContactsTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserServiceImplementationTest.nonExistentUser_FindsContact_ThrowsExceptionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserServiceImplementationTest.userCreatesContactTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="contactBox" />
       <extension name="coverage">
         <pattern>
@@ -161,13 +187,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.contactBox.services" />
       <option name="MAIN_CLASS_NAME" value="com.contactBox.services.UserServiceImplementationTest" />
-      <option name="METHOD_NAME" value="nonExistentUser_FindsContact_ThrowsExceptionTest" />
+      <option name="METHOD_NAME" value="userCreatesContactTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserServiceImplementationTest.userFindAllContactsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserServiceImplementationTest.userUpdatesNonExistentContact_ThrowsExceptionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="contactBox" />
       <extension name="coverage">
         <pattern>
@@ -177,7 +203,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.contactBox.services" />
       <option name="MAIN_CLASS_NAME" value="com.contactBox.services.UserServiceImplementationTest" />
-      <option name="METHOD_NAME" value="userFindAllContactsTest" />
+      <option name="METHOD_NAME" value="userUpdatesNonExistentContact_ThrowsExceptionTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -199,10 +225,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Spring Boot.ContactBox" />
-        <item itemvalue="JUnit.UserControllerTest.userFindsAllContacts" />
-        <item itemvalue="JUnit.UserServiceImplementationTest.nonExistentUser_FindsContact_ThrowsExceptionTest" />
-        <item itemvalue="JUnit.UserServiceImplementationTest.userFindAllContactsTest" />
-        <item itemvalue="JUnit.UserControllerTest.nonExistentUserEditsContactTest" />
+        <item itemvalue="JUnit.UserControllerTest.userLogsOut_FindsAllContactsTest" />
+        <item itemvalue="JUnit.UserControllerTest.userFindsAllContacts_ContactsDoesNotExistTest" />
+        <item itemvalue="JUnit.UserServiceImplementationTest.userCreatesContactTest" />
+        <item itemvalue="JUnit.UserServiceImplementationTest.userUpdatesNonExistentContact_ThrowsExceptionTest" />
       </list>
     </recent_temporary>
   </component>
@@ -232,17 +258,47 @@
       <workItem from="1712527003411" duration="2623000" />
       <workItem from="1712537241925" duration="5428000" />
       <workItem from="1712558307087" duration="6118000" />
+      <workItem from="1712750074950" duration="1002000" />
+      <workItem from="1712751394637" duration="64000" />
+      <workItem from="1712751632382" duration="3590000" />
+      <workItem from="1712756570894" duration="1243000" />
+      <workItem from="1712765739411" duration="843000" />
+      <workItem from="1712774201700" duration="748000" />
+      <workItem from="1712836952413" duration="23496000" />
+      <workItem from="1713005860395" duration="11377000" />
+      <workItem from="1713020089779" duration="393000" />
     </task>
+    <task id="LOCAL-00001" summary="new commit">
+      <option name="closed" value="true" />
+      <created>1712750323155</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712750323155</updated>
+    </task>
+    <task id="LOCAL-00002" summary="new commit">
+      <option name="closed" value="true" />
+      <created>1712750395131</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1712750395131</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="new commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="new commit" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/contactBox$UserControllerTest.ic" NAME="UserControllerTest Coverage Results" MODIFIED="1712542360889" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.contactBox.controllers.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/contactBox$UserServiceImplementationTest.ic" NAME="UserServiceImplementationTest Coverage Results" MODIFIED="1712542651144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/contactBox$UserServiceImplementationTest.ic" NAME="UserServiceImplementationTest Coverage Results" MODIFIED="1713008569830" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.contactBox.services.*</FILTER>
     </SUITE>
   </component>
