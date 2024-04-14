@@ -16,7 +16,7 @@ public class ValidateInputs {
         return true;
     }
 
-    public static boolean isPhoneNumberAllDigits(String phoneNumber) {
+    public static boolean doesPhoneNumberContainNonDigitCharacters(String phoneNumber) {
         return !phoneNumber.matches("\\d+");
     }
 

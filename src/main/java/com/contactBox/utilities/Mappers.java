@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.contactBox.utilities.ValidateInputs.areAllFieldsNullOrEmpty;
-import static com.contactBox.utilities.ValidateInputs.isPhoneNumberAllDigits;
+import static com.contactBox.utilities.ValidateInputs.doesPhoneNumberContainNonDigitCharacters;
 
 public class Mappers {
 
@@ -47,10 +47,10 @@ public class Mappers {
 
     public static Contact createContactRequestMap(CreateContactRequest createContactRequest) {
         if (areAllFieldsNullOrEmpty(createContactRequest)) throw new IllegalArgumentException("All Fields are null or empty. Please enter a valid input to create contact.");
-        if (isPhoneNumberAllDigits(createContactRequest.getPhoneNumber())) throw new IllegalArgumentException("Please enter a valid phone number.");
+        if (createContactRequest.getPhoneNumber() != null && doesPhoneNumberContainNonDigitCharacters(createContactRequest.getPhoneNumber())) throw new IllegalArgumentException("Please enter a valid phone number.");
         Contact contact = new Contact();
-        contact.setFirstName(createContactRequest.getFirstName().toLowerCase());
-        contact.setLastName(createContactRequest.getLastName().toLowerCase());
+        if (createContactRequest.getFirstName() != null) contact.setFirstName(createContactRequest.getFirstName().toLowerCase().trim());
+        if (createContactRequest.getLastName() != null) contact.setLastName(createContactRequest.getLastName().toLowerCase().trim());
         contact.setPhoneNumber(createContactRequest.getPhoneNumber());
         contact.setEmail(createContactRequest.getEmail());
         contact.setNotes(createContactRequest.getNotes());
@@ -75,9 +75,9 @@ public class Mappers {
     }
 
     public static Contact updateContactRequestMap(UpdateContactRequest updateContactRequest, Contact contact) {
-        if (isPhoneNumberAllDigits(updateContactRequest.getPhoneNumber())) throw new IllegalArgumentException("Please enter a valid phone number.");
-        if (updateContactRequest.getFirstName() != null) contact.setFirstName(updateContactRequest.getFirstName().toLowerCase());
-        if (updateContactRequest.getLastName() != null) contact.setLastName(updateContactRequest.getLastName().toLowerCase());
+        if (updateContactRequest.getPhoneNumber() != null && doesPhoneNumberContainNonDigitCharacters(updateContactRequest.getPhoneNumber())) throw new IllegalArgumentException("Please enter a valid phone number.");
+        if (updateContactRequest.getFirstName() != null) contact.setFirstName(updateContactRequest.getFirstName().toLowerCase().trim());
+        if (updateContactRequest.getLastName() != null) contact.setLastName(updateContactRequest.getLastName().toLowerCase().trim());
         if (updateContactRequest.getPhoneNumber() != null) contact.setPhoneNumber(updateContactRequest.getPhoneNumber());
         if (updateContactRequest.getEmail() != null) contact.setEmail(updateContactRequest.getEmail());
         if (updateContactRequest.getNotes() != null) contact.setNotes(updateContactRequest.getNotes());
